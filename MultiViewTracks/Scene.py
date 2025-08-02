@@ -147,6 +147,9 @@ class Scene:
             self.point_cloud = np.transpose([ply_data['vertex']['x'],
                                              ply_data['vertex']['y'],
                                              ply_data['vertex']['z'],
+                                             ply_data['vertex']['nx'],
+                                             ply_data['vertex']['ny'],
+                                             ply_data['vertex']['nz'],
                                              ply_data['vertex']['red'],
                                              ply_data['vertex']['green'],
                                              ply_data['vertex']['blue']])
