@@ -169,12 +169,15 @@ def tracks_to_ply(tracks, uniform_color=None):
 def pointcloud_to_ply(point_cloud):
     '''Returns pre-formatted ply points from input points, use Scene.get_pointcloud'''
 
-    pts_ply = []
-    for pt in point_cloud:
-        pts_ply.append('{:f} {:f} {:f} {:.0f} {:.0f} {:.0f} 0\n'.format(*pt))
+    if len(point_cloud[0]) == 9:
+        for pt in point_cloud:
+            pts_ply.append('{:f} {:f} {:f} {:f} {:f} {:f} {:.0f} {:.0f} {:.0f} 0\n'.format(*pt))
+    else:
+        for pt in point_cloud:
+            pts_ply.append('{:f} {:f} {:f} {:.0f} {:.0f} {:.0f} 0\n'.format(*pt))
     return pts_ply
 
-def write_ply(pts_ply, file_name):
+def write_ply(pts_ply, point_dim, file_name):
     '''Write points to a .ply file for visualization
 
     Parameters
@@ -190,8 +193,26 @@ def write_ply(pts_ply, file_name):
         Successful save?
     '''
 
-    with open(file_name, 'w') as fid:
-        fid.write(('ply\n' + \
+    if point_dim == 9:
+       with open(file_name, 'w') as fid:
+            fid.write(('ply\n' + \
+                   'format ascii 1.0\n' + \
+                   'element vertex {:d}\n' + \
+                   'property float x\n' + \
+                   'property float y\n' + \
+                   'property float z\n' + \
+                   'property float nx\n' + \
+                   'property float ny\n' + \
+                   'property float nz\n' + \
+                   'property uchar red\n' + \
+                   'property uchar green\n' + \
+                   'property uchar blue\n' + \
+                   'property uchar alpha\n' + \
+                   'end_header\n' + \
+                   '{}\n').format(len(pts_ply), ''.join(pts_ply)))
+    else:
+       with open(file_name, 'w') as fid:
+            fid.write(('ply\n' + \
                    'format ascii 1.0\n' + \
                    'element vertex {:d}\n' + \
                    'property float x\n' + \
