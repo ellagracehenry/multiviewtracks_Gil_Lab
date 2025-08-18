@@ -203,7 +203,6 @@ class Scene:
                                              self.intrinsics[camera_id],
                                              self.tracks[camera_id],
                                              self.verbose)
-        self.check_tracks()
 
     def interpolate_cameras(self):
         '''Interpolates the camera paths of the Scene using Camera.interpolate.'''
