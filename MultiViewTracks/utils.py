@@ -168,7 +168,7 @@ def tracks_to_ply(tracks, uniform_color=None):
 
 def pointcloud_to_ply(point_cloud):
     '''Returns pre-formatted ply points from input points, use Scene.get_pointcloud'''
-
+    pts_ply = []
     if len(point_cloud[0]) == 9:
         for pt in point_cloud:
             pts_ply.append('{:f} {:f} {:f} {:f} {:f} {:f} {:.0f} {:.0f} {:.0f} 0\n'.format(*pt))
