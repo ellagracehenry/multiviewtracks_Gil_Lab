@@ -131,7 +131,7 @@ class Camera:
         reconstructed = np.isin(pooled['FRAME_IDX'], self.view_idx)
         for key in pooled:
             pooled[key] = pooled[key][reconstructed]
-        pts_2d = np.transpose([pooled['X'], pooled['Y']]).reshape(-1, 1, 2).astype(np.float)
+        pts_2d = np.transpose([pooled['X'], pooled['Y']]).reshape(-1, 1, 2).astype(float)
         if self.fisheye:
             pts_2d = cv2.fisheye.undistortPoints(pts_2d, self.k, self.d).reshape(-1, 2)
         else:
@@ -210,8 +210,8 @@ class Camera:
             pooled_reprojected['IDENTITY'].append(identities_3d)
         for key in pooled_reprojected:
             pooled_reprojected[key] = np.concatenate(pooled_reprojected[key])
-        pooled_reprojected['IDENTITY'] = pooled_reprojected['IDENTITY'].astype(np.int)
-        pooled_reprojected['FRAME_IDX'] = pooled_reprojected['FRAME_IDX'].astype(np.int)
+        pooled_reprojected['IDENTITY'] = pooled_reprojected['IDENTITY'].astype(int)
+        pooled_reprojected['FRAME_IDX'] = pooled_reprojected['FRAME_IDX'].astype(int)
         self.tracks_reprojected = tracks_from_pooled(pooled_reprojected)
         if self.verbose:
             print('  Reprojected tracks for Camera {} | {}'. format(self.id, self.name))

@@ -11,7 +11,7 @@ def tracks_to_pooled(tracks):
             pooled['IDENTITY'] = []
         for key in tracks[str(i)]:
             pooled[key].append(tracks[str(i)][key])
-        pooled['IDENTITY'].append(np.repeat(i, tracks[str(i)][key].shape[0]).astype(np.int))
+        pooled['IDENTITY'].append(np.repeat(i, tracks[str(i)][key].shape[0]).astype(int))
     for key in pooled:
         pooled[key] = np.concatenate(pooled[key], axis=0)
     return pooled
@@ -27,8 +27,8 @@ def tracks_from_pooled(pooled):
             tracks[str(i)][key] = pooled[key][pooled['IDENTITY'] == i]
         tracks['IDENTITIES'].append(i)
         tracks['FRAME_IDX'].append(tracks[str(i)]['FRAME_IDX'])
-    tracks['IDENTITIES'] = np.array(tracks['IDENTITIES'], dtype=np.int)
-    tracks['FRAME_IDX'] = np.unique(np.concatenate(tracks['FRAME_IDX'])).astype(np.int)
+    tracks['IDENTITIES'] = np.array(tracks['IDENTITIES'], dtype=int)
+    tracks['FRAME_IDX'] = np.unique(np.concatenate(tracks['FRAME_IDX'])).astype(int)
     return tracks
 
 def rotate_tracks(tracks, pca):
@@ -100,8 +100,8 @@ def interpolate_tracks(tracks):
     for i in tracks['IDENTITIES']:
         tracks_interpolated[str(i)] = interpolate_trajectory(tracks[str(i)])
         tracks_interpolated['FRAME_IDX'].append(tracks_interpolated[str(i)]['FRAME_IDX'])
-    tracks_interpolated['FRAME_IDX'] = np.unique(np.concatenate(tracks_interpolated['FRAME_IDX'])).astype(np.int)
-    tracks_interpolated['IDENTITIES'] = tracks['IDENTITIES'].astype(np.int)
+    tracks_interpolated['FRAME_IDX'] = np.unique(np.concatenate(tracks_interpolated['FRAME_IDX'])).astype(int)
+    tracks_interpolated['IDENTITIES'] = tracks['IDENTITIES'].astype(int)
     return tracks_interpolated
 
 def interpolate_subtracks(sub_tracks):
@@ -162,5 +162,5 @@ def tracks_from_subtracks(sub_tracks):
     for i in sub_tracks['IDENTITIES']:
         tracks[str(i)] = trajectory_from_subtrajectories(sub_tracks[str(i)])
         tracks['FRAME_IDX'].append(tracks[str(i)]['FRAME_IDX'])
-    tracks['FRAME_IDX'] = np.unique(np.concatenate(tracks['FRAME_IDX'])).astype(np.int)
+    tracks['FRAME_IDX'] = np.unique(np.concatenate(tracks['FRAME_IDX'])).astype(int)
     return tracks

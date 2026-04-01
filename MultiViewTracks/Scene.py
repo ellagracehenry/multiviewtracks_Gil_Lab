@@ -97,13 +97,13 @@ class Scene:
         for idx, key in enumerate(['IMAGE_ID', 'Q1', 'Q2', 'Q3', 'Q4', 'TX', 'TY', 'TZ', 'CAMERA_ID', 'IMAGE_NAME']):
             extrinsics[key] = np.array([view[idx] for view in views])
             if 'ID' in key:
-                extrinsics[key] = extrinsics[key].astype(np.int)
+                extrinsics[key] = extrinsics[key].astype(int)
             elif key == 'IMAGE_NAME':
-                extrinsics[key] = extrinsics[key].astype(np.str)
+                extrinsics[key] = extrinsics[key].astype(str)
             else:
-                extrinsics[key] = extrinsics[key].astype(np.float)
+                extrinsics[key] = extrinsics[key].astype(float)
         extrinsics['FRAME_IDX'] = np.array([os.path.splitext(os.path.basename(image_name))[0].split('_')[-1] \
-                                            for image_name in extrinsics['IMAGE_NAME']]).astype(np.int)
+                                            for image_name in extrinsics['IMAGE_NAME']]).astype(int)
         sort_idx = np.argsort(extrinsics['IMAGE_ID'])
         for key in extrinsics:
             extrinsics[key] = extrinsics[key][sort_idx]
@@ -230,7 +230,7 @@ class Scene:
             for i in self.cameras[camera_id].tracks['IDENTITIES']:
                 unique, counts = np.unique(self.cameras[camera_id].tracks[str(i)]['FRAME_IDX'], return_counts=True)
                 if unique[counts > 1].size > 0:
-                    duplicates.append((camera_id, i, unique[counts > 1].astype(np.int).tolist()))
+                    duplicates.append((camera_id, i, unique[counts > 1].astype(int).tolist()))
         assert len(duplicates) == 0, \
         'Found duplicate positions in:\n' + \
         ''.join(['Camera {} | {}: identity {}, frames {}\n'.format(
@@ -447,5 +447,5 @@ class Scene:
             for idx in np.unique(frame_idx):
                 min_errors.append(errors[frame_idx == idx].min())
             min_errors = np.array(min_errors)
-            frame_idx = np.unique(frame_idx).astype(np.int)
+            frame_idx = np.unique(frame_idx).astype(int)
             self.tracks_triangulated[str(i)]['REPR_ERROR'] = min_errors
